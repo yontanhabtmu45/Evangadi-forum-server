@@ -46,9 +46,9 @@ async function questions(req, res) {
 
 async function getQuestion(req, res) {
   try {
-    const userId = req.user.userId; // Automatically extract userId from req.user
+    const userId = req.user.userId; 
 
-    // Query all questions associated with the authenticated user
+    
     const [rows] = await dbConnection.query(
       "SELECT * FROM questions WHERE userId = ?",
       [userId]
@@ -59,7 +59,7 @@ async function getQuestion(req, res) {
         .json({ msg: "No questions found" });
     }
 
-    return res.status(StatusCodes.OK).json(rows); // Return all questions for the user
+    return res.status(StatusCodes.OK).json(rows); 
   } catch (error) {
     console.log(error.message);
     return res
@@ -92,9 +92,8 @@ async function getSingleQuestion(req, res) {
   try {
     const { id } = req.params;
 
-    // Query the database for the question with the given ID
     const [rows] = await dbConnection.query(
-      "SELECT * FROM questions WHERE id = ?",
+      "SELECT * FROM questions WHERE questionid = ?",
       [id]
     );
 

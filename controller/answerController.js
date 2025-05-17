@@ -3,19 +3,17 @@ const { StatusCodes } = require("http-status-codes");
 const { v4: uuidv4 } = require("uuid");
 
 const getAnswers = async (req, res) => {
-  const { questionId } = req.params; // Extract questionId from the request parameters
+  const { questionId } = req.params;
   try {
     const [answers] = await dbConnection.query(
-        "SELECT * FROM answers WHERE questionId = ?", [questionId]
-    ); // Fetch answers for the specific questionId
-
+      "SELECT * FROM answers WHERE questionid = ?", [questionId]
+    ); 
     if (answers.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ msg: "No answers found for this question" });
     }
-
-    res.status(StatusCodes.OK).json(answers); // Return the answers
+    res.status(StatusCodes.OK).json(answers); 
   } catch (error) {
     console.error(error.message);
     res
@@ -61,7 +59,51 @@ const createAnswer = async (req, res) => {
         .json({ error: "Something went wrong, try again later!" });
     }
   };
+
+const getSingleAnswer = async (req, res) => {
+  const { answerId } = req.params;
+  try {
+    const [answers] = await dbConnection.query(
+      "SELECT * FROM answers WHERE answerid = ?", [answerId]
+    );
+    if (answers.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Answer not found" });
+    }
+    res.status(StatusCodes.OK).json(answers[0]);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Something went wrong, try again later!" });
+  }
+};
+
+const getSingleQuestionAnswer = async (req, res) => {
+  const { questionId, answerId } = req.params;
+  try {
+    const [answers] = await dbConnection.query(
+      "SELECT * FROM answers WHERE questionid = ? AND answerid = ?",
+      [questionId, answerId]
+    );
+    if (answers.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Answer not found for this question" });
+    }
+    res.status(StatusCodes.OK).json(answers[0]);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Something went wrong, try again later!" });
+  }
+};
+
 module.exports = {
   getAnswers,
   createAnswer,
+  getSingleAnswer,
+  getSingleQuestionAnswer,
 };

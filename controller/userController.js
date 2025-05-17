@@ -46,7 +46,6 @@ async function register(req, res) {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "something went wrong, try again later!" });
   }
-  // res.send('register')
 }
 async function login(req, res) {
   const { email, password } = req.body;
@@ -98,7 +97,7 @@ async function checkUser(req, res) {
 
 const getUser = async (req, res) => {
   try {
-    const userId = req.user.userId; // Extract userId from the authenticated user
+    const userId = req.user.userId; 
     const [user] = await dbConnection.query(
       "SELECT userId, username, email FROM users WHERE userId = ?",
       [userId]

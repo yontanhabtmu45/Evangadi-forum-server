@@ -16,7 +16,7 @@ async function authMiddleware(req, res, next) {
   try {
     const { username, userid } = jwt.verify(token, process.env.JWT_SECRET);
     req.user = { username, userid };
-    req.user = { userId: userid }; // Replace with actual userId extraction logic
+    req.user = { userId: userid }; 
     next();
   } catch (error) {
     return res

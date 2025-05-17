@@ -12,7 +12,7 @@ router.get("/my-question", getQuestion)
 router.get("/all-questions", getAllUsersQuestions)
 
 
-router.get("/:id", getSingleQuestion);
+router.get("/questions/:id", getSingleQuestion);
 
 
 
